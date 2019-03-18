@@ -53,6 +53,7 @@ class NeuralStyleGatys:
         self.content_loss_weight = 0.001
         self.style_loss_weight = 1
 
+    @staticmethod
     def _calc_content_loss(self, proc_img, input_img):
         """
         Compute the content loss
@@ -68,7 +69,14 @@ class NeuralStyleGatys:
         :param A_out_layers:
         :param G_out_layers:
         """
-        pass
+        assert (A_out_layers.ndim == G_out_layers.ndim and A_out_layers.ndim == 3)
+        N = A_out_layers.shape[2]
+        M = A_out_layers.shape[0] * A_out_layers.shape[1]
+        Gram_A = compute_gram_matrix(A_out_layers)
+        Gram_G = compute_gram_matrix(G_out_layers)
+        channels = 3
+        size = self.img_width * self.img_height
+        return K.sum(K.square(Gram_A - Gram_G)) / (4. * (channels ** 2) * (size ** 2))
 
     def _calc_total_loss(self, c_loss, s_loss, alpha, beta):
         """

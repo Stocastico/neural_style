@@ -34,8 +34,6 @@ def preprocess_image_for_VGG(img):
     :param img: input image
     :return: preprocessed image
     """
-    # RGB -> BGR
-    img = img[:, :, ::-1]
     # Remove mean
     img[:, :, 0] -= MEAN_B
     img[:, :, 1] -= MEAN_G
@@ -59,9 +57,6 @@ def postprocess_image_from_VGG(x):
     img[:, :, 0] += MEAN_B
     img[:, :, 1] += MEAN_G
     img[:, :, 2] += MEAN_R
-
-    # BGR -> RGB
-    img = img[:, :, ::-1]
 
     img = np.clip(img, 0, 255).astype('uint8')
     return img

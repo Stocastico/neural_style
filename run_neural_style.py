@@ -27,6 +27,9 @@ elif args.verbosity == 2:
 else:
     logger.setLevel(logging.DEBUG)
 
+nst = NeuralStyleGatys(style_img_path=args.style_img_oath, content_img_path=args.content_img_path,
+                       output_path=args.output_img, iterations=args.iterations)
+
 
 
 
