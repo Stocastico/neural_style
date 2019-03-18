@@ -70,15 +70,15 @@ class NeuralStyleGatys:
         """
         pass
 
-    def _calc_total_loss(self, c_loss, s_loss, alfa, beta):
+    def _calc_total_loss(self, c_loss, s_loss, alpha, beta):
         """
         Compute the total loss as a weighted sum of content and style losses
         :param s_loss:
-        :param alfa:
+        :param alpha:
         :param beta:
         :return:
         """
-        return alfa * c_loss + beta * s_loss
+        return alpha * c_loss + beta * s_loss
 
     @staticmethod
     def _calc_style_loss_layer(A, G):

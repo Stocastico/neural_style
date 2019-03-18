@@ -15,8 +15,8 @@ MEAN_R = 123.68
 
 def compute_gram_matrix(img):
     """
-    Compute the gram matrix of an image, defined as ...
-    :param img: numpy array repesenting an image
+    Compute the gram matrix of an image, defined as the product of the matrix with its transpose
+    :param img: numpy array representing an image
     :return:
     """
     num_dim = img.ndim()
@@ -31,7 +31,37 @@ def compute_gram_matrix(img):
 def preprocess_image_for_VGG(img):
     """
     Preprocess an image so that it can be fed to a VGG network
-    :param img:
-    :return:
+    :param img: input image
+    :return: preprocessed image
     """
-    pass
+    # RGB -> BGR
+    img = img[:, :, ::-1]
+    # Remove mean
+    img[:, :, 0] -= MEAN_B
+    img[:, :, 1] -= MEAN_G
+    img[:, :, 2] -= MEAN_R
+
+    img = img.astype('float32')
+    img = np.expand_dims(img, axis=0)
+
+    return img
+
+
+def postprocess_image_from_VGG(x):
+    """
+    Convert a tensor to a valid image. Remove preprocessing steps
+    :param x: input tensor
+    :return: deprocessed image
+    """
+    (_, w, h, _) = x.shape
+    img = x.reshape((w, h, 3))
+
+    img[:, :, 0] += MEAN_B
+    img[:, :, 1] += MEAN_G
+    img[:, :, 2] += MEAN_R
+
+    # BGR -> RGB
+    img = img[:, :, ::-1]
+
+    img = np.clip(img, 0, 255).astype('uint8')
+    return img
